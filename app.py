@@ -1,5 +1,4 @@
 import os
-from dotenv import load_dotenv
 from flask import Flask, request, jsonify, send_from_directory
 import requests
 
@@ -7,7 +6,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-my_secret = os.environ['ERD_API_KEY'] or os.getenv("ERD_API_KEY")
+my_secret = os.environ['ERD_API_KEY']
 
 def get_exchange_rate(from_currency, to_currency, amount, date=None):
   url = f"https://api.apilayer.com/currency_data/convert?from={from_currency}&to={to_currency}&amount={amount}"
@@ -25,6 +24,7 @@ def get_exchange_rate(from_currency, to_currency, amount, date=None):
 
 @app.route('/convert', methods=['GET'])
 def convert_currency():
+  print("Reached convert method!")
   from_currency = request.args.get('from')
   to_currency = request.args.get('to')
   amount = request.args.get('amount')
